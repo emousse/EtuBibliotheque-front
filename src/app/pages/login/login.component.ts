@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
 import { MaterialModule } from '../../shared/material.module';
@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   private userService = inject(UserService);
   private formBuilder = inject(FormBuilder);
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
   loginForm: FormGroup = new FormGroup({});
   submitted = false;
   loading = false;
@@ -57,7 +58,7 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: () => {
           this.success = true;
-          // TODO (étape 5) : rediriger vers la liste des étudiants
+          this.router.navigate(['/students']);
         },
         error: (error: HttpErrorResponse) => {
           this.errorMessage = error.error?.message ?? 'Erreur lors de la connexion. Veuillez réessayer.';
