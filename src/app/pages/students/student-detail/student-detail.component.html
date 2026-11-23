@@ -1,0 +1,29 @@
+<div class="card m-3">
+  <h5 class="card-header">Détail de l'étudiant</h5>
+  <div class="card-body">
+    @if (errorMessage) {
+      <div class="alert alert-danger" role="alert">{{ errorMessage }}</div>
+    }
+
+    @if (loading) {
+      <div class="text-center">
+        <span class="spinner-border spinner-border-sm mr-1" role="status"></span>
+        Chargement…
+      </div>
+    } @else if (student) {
+      <dl class="row">
+        <dt class="col-sm-3">Nom</dt>
+        <dd class="col-sm-9">{{ student.lastName }}</dd>
+        <dt class="col-sm-3">Prénom</dt>
+        <dd class="col-sm-9">{{ student.firstName }}</dd>
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">{{ student.email }}</dd>
+        <dt class="col-sm-3">Date de naissance</dt>
+        <dd class="col-sm-9">{{ student.birthDate | date: 'dd/MM/yyyy' }}</dd>
+      </dl>
+      <a class="btn btn-primary mr-1" [routerLink]="['/students', student.id, 'edit']">Modifier</a>
+      <button class="btn btn-danger mr-1" type="button" (click)="onDelete()">Supprimer</button>
+    }
+    <a class="btn btn-secondary" routerLink="/students">Retour à la liste</a>
+  </div>
+</div>
