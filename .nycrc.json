@@ -1,0 +1,12 @@
+{
+  "all": true,
+  "include": ["src/app/**/*.ts"],
+  "exclude": ["src/app/**/*.spec.ts", "src/app/**/*-mock.service.ts", "src/app/app.config.ts"],
+  "extension": [".ts"],
+  "report-dir": "coverage-e2e",
+  "reporter": ["html", "text-summary"],
+  "statements": 80,
+  "branches": 80,
+  "functions": 80,
+  "lines": 80
+}
