@@ -1,5 +1,7 @@
 # EtudiantFrontend
 
+Interface Angular d'EtuBibliothèque : inscription et connexion des agents, puis gestion des étudiants (liste, détail, ajout, modification, suppression), consommant l'API du [back-end](https://github.com/emousse/EtuBibliotheque-back).
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.16.
 
 ## Development server
