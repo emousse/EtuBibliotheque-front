@@ -1,6 +1,9 @@
 <div class="card m-3">
   <h5 class="card-header">Login</h5>
   <div class="card-body">
+    @if (registered) {
+      <div class="alert alert-success" role="alert">Compte créé. Vous pouvez vous connecter.</div>
+    }
     @if (success) {
       <div class="alert alert-success" role="alert">Vous êtes connecté.</div>
     }

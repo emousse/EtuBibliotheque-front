@@ -43,6 +43,28 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should not show the account-created banner by default', () => {
+    expect(component.registered).toBe(false);
+    expect(fixture.nativeElement.querySelector('.alert-success')).toBeNull();
+  });
+
+  it('should show the account-created banner when coming from registration, until the form is submitted', async () => {
+    // GIVEN : l'inscription redirige vers /login?registered=true
+    await router.navigateByUrl('/?registered=true');
+    const registeredFixture = TestBed.createComponent(LoginComponent);
+    registeredFixture.detectChanges();
+    const banner = () => registeredFixture.nativeElement.querySelector('.alert-success');
+
+    expect(banner().textContent).toContain('Compte créé');
+
+    // WHEN : l'agent soumet le formulaire de connexion
+    registeredFixture.componentInstance.onSubmit();
+    registeredFixture.detectChanges();
+
+    // THEN : le bandeau disparaît
+    expect(banner()).toBeNull();
+  });
+
   it('should not call the API and should show required errors when the form is empty', () => {
     component.onSubmit();
     fixture.detectChanges();

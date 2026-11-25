@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
 import { MaterialModule } from '../../shared/material.module';
@@ -21,13 +21,17 @@ export class LoginComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private destroyRef = inject(DestroyRef);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   loginForm: FormGroup = new FormGroup({});
   submitted = false;
   loading = false;
   errorMessage: string | null = null;
   success = false;
+  /** Vrai quand on arrive de l'inscription (/login?registered=true). */
+  registered = false;
 
   ngOnInit() {
+    this.registered = this.route.snapshot.queryParamMap.has('registered');
     this.loginForm = this.formBuilder.group({
       login: ['', Validators.required],
       password: ['', Validators.required]
@@ -42,6 +46,7 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     this.errorMessage = null;
     this.success = false;
+    this.registered = false;
     if (this.loginForm.invalid) {
       return;
     }
