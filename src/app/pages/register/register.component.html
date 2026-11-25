@@ -1,6 +1,9 @@
 <div class="card m-3">
   <h5 class="card-header">Registration Form</h5>
   <div class="card-body">
+    @if (errorMessage) {
+      <div class="alert alert-danger" role="alert">{{ errorMessage }}</div>
+    }
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="form-row">
         <div class="form-group col-5">

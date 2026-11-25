@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { of, throwError } from 'rxjs';
 
 import { RegisterComponent } from './register.component';
 import { UserService } from '../../core/service/user.service';
@@ -32,8 +33,6 @@ describe('RegisterComponent', () => {
     component = fixture.componentInstance;
     router = TestBed.inject(Router);
     jest.spyOn(router, 'navigate').mockResolvedValue(true);
-    // jsdom n'implémente pas alert()
-    jest.spyOn(window, 'alert').mockImplementation(() => undefined);
     fixture.detectChanges();
   });
 
@@ -49,23 +48,47 @@ describe('RegisterComponent', () => {
     expect(fixture.nativeElement.textContent).toContain('First Name is required');
   });
 
-  it('should register the agent and navigate to /login', () => {
-    const agent = { firstName: 'Ada', lastName: 'Lovelace', login: 'ada', password: 'secret' };
+  const agent = { firstName: 'Ada', lastName: 'Lovelace', login: 'ada', password: 'secret' };
+
+  it('should register the agent and navigate to /login with the registered flag', () => {
     component.registerForm.setValue(agent);
 
     component.onSubmit();
 
     expect(userService.register).toHaveBeenCalledWith(agent);
-    expect(router.navigate).toHaveBeenCalledWith(['/login']);
+    expect(router.navigate).toHaveBeenCalledWith(['/login'], { queryParams: { registered: true } });
   });
 
-  it('should reset the form on cancel', () => {
+  it('should display the server error message and stay on the page when registration fails', () => {
+    userService.register.mockReturnValue(throwError(() =>
+      new HttpErrorResponse({ status: 400, error: { message: 'User with login ada already exists' } })));
+    component.registerForm.setValue(agent);
+
+    component.onSubmit();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.alert-danger').textContent).toContain('User with login ada already exists');
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should display a default message when the server is unreachable', () => {
+    userService.register.mockReturnValue(throwError(() => new HttpErrorResponse({ status: 0 })));
+    component.registerForm.setValue(agent);
+
+    component.onSubmit();
+
+    expect(component.errorMessage).toContain('Erreur lors de l\'inscription');
+  });
+
+  it('should reset the form and the error message on cancel', () => {
     component.registerForm.patchValue({ firstName: 'Ada' });
     component.submitted = true;
+    component.errorMessage = 'User with login ada already exists';
 
     component.onReset();
 
     expect(component.submitted).toBe(false);
+    expect(component.errorMessage).toBeNull();
     expect(component.registerForm.value.firstName).toBeNull();
   });
 });
