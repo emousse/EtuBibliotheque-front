@@ -33,6 +33,14 @@ yarn-error.log
 .sass-cache/
 /connect.lock
 /coverage
+/coverage-e2e
+/.nyc_output
+
+# Cypress : binaire local et artefacts des tests E2E
+/.cypress-cache
+/cypress/screenshots
+/cypress/videos
+/cypress/downloads
 /libpeerconnection.log
 testem.log
 /typings

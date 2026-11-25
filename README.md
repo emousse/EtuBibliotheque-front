@@ -40,21 +40,33 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ## Running unit tests
 
-To execute unit tests with the [Jest](https://jestjs.io/) test runner, use the following command:
+To execute unit and integration tests with the [Jest](https://jestjs.io/) test runner, use the following command:
 
 ```bash
-jest
+npm test
 ```
+
+The coverage report is generated in `coverage/index.html`. Jest fails if coverage drops below 80 %.
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+End-to-end tests use [Cypress](https://www.cypress.io/). API calls are mocked with `cy.intercept()`, so the back-end does not need to run.
+
+The Cypress binary is stored inside the project (`.cypress-cache/`, ignored by Git). After `npm install`, download it once with:
 
 ```bash
-ng e2e
+npm run cypress:install
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Then:
+
+```bash
+npm run e2e            # starts an instrumented dev server on port 4210 and runs all specs headless
+npm run e2e:open       # same, with the interactive Cypress UI
+npm run e2e:coverage   # prints the E2E coverage summary and fails below 80 %
+```
+
+The E2E coverage report is generated in `coverage-e2e/index.html`. The instrumented build (`build-e2e` / `serve-e2e` targets, `coverage.webpack.js`) is only used for end-to-end tests; `ng serve` and `ng build` are unchanged.
 
 ## Additional Resources
 
