@@ -48,6 +48,10 @@ npm test
 
 The coverage report is generated in `coverage/index.html`. Jest fails if coverage drops below 80 %.
 
+Current result: 52 tests, **100 % coverage**.
+
+![Jest coverage report](docs/coverage/jest.png)
+
 ## Running end-to-end tests
 
 End-to-end tests use [Cypress](https://www.cypress.io/). API calls are mocked with `cy.intercept()`, so the back-end does not need to run.
@@ -67,6 +71,10 @@ npm run e2e:coverage   # prints the E2E coverage summary and fails below 80 %
 ```
 
 The E2E coverage report is generated in `coverage-e2e/index.html`. The instrumented build (`build-e2e` / `serve-e2e` targets, `coverage.webpack.js`) is only used for end-to-end tests; `ng serve` and `ng build` are unchanged.
+
+Current result: 25 tests, **95.59 % of lines covered**.
+
+![Cypress E2E coverage report](docs/coverage/cypress-e2e.png)
 
 ## Additional Resources
 
